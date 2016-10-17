@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="jquery.js"></script>
+        <style type="text/css">
+        	.item{
+        		height:400px;
+        		width:100%;
+        		border:1px solid #ccc;
+        		position: relative;
+        	}
+        	.animate{
+        		height: 50px;
+        		width:50px;
+        		background: red;
+        		position: absolute;
+        		left: 0;
+        		top:175px;
+        	}
+        </style>
+    </head>
+    <body>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+		<div class="item">
+			<div class="animate"></div>
+		</div>
+    </body>
+    <script type="text/javascript">
+
+    	var itemHeight = 400;
+    	var $list = $('.item');
+    	var $body = $('body');
+    	var history = [];//用来限制每个动画只出发一次；
+
+    	var downLinJieZhi = ($list.length-2)*400;//由于最后一到两个scroll事件触发不了 所以当滚到底部的时候就播放最后两个
+
+    	$(window).on('scroll',function(e) {
+
+    		//实时获取body的scroll的距离
+    		var scrollTop = $body.scrollTop();
+
+    		if(scrollTop >= downLinJieZhi){
+    			$($list[$list.length-1]).find('.animate').css({
+					'-webkit-transform':'translate3d( 1000px, 0, 0)',
+					'-webkit-transition-duration':'3s'
+				})
+    		}
+    		
+    		//算出相对于要设定的滚动某个位置触发动画的范围值 当大于等于0小于等于10的时候出发 之所以给个范围是为了避免太快而事件不好捕捉
+    		var pos = scrollTop%itemHeight;
+    		
+    		//用来判断是滚动到哪个div了
+    		var witchOne;
+
+    		if(pos>=0 && pos<=10){
+    			witchOne = parseInt(scrollTop/itemHeight);
+    			if(!history[witchOne]){
+    				history[witchOne] = 1;
+    				$($list[witchOne]).find('.animate').css({
+    					'-webkit-transform':'translate3d( 1000px, 0, 0)',
+    					'-webkit-transition-duration':'3s'
+    				})
+    			}
+    		}
+
+    	})
+    </script>
+</html>
